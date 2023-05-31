@@ -17,7 +17,7 @@ export default function Home() {
           <li>Nguyễn Thanh Thanh Tùng - ITITIU19236</li>
           <li>Phạm Duy Thịnh - ITITIU19215</li>
           <li>Lê Quốc Phong - ITITIU19181</li>
-          <li>Vinh</li>
+          <li>Trần Cẩm Vinh - ITITIU19244</li>
         </ul>
         <ul>
           <h3>Information</h3>
