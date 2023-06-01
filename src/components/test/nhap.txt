@@ -1,0 +1,158 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { HTMLAttributes, MutableRefObject, useEffect, useRef } from "react";
+import cn from "classnames";
+import * as d3 from "d3";
+
+import styles from "./styles.module.css";
+
+export type HeatmapProps = HTMLAttributes<HTMLDivElement>;
+interface PopulationData {
+  date: string;
+  population: number;
+  change: number;
+}
+
+export default function Heatmap({ className, ...rest }: HeatmapProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  async function render(root: SVGSVGElement) {
+    // set the dimensions and margins of the graph
+    const margin = { top: 10, right: 30, bottom: 30, left: 60 };
+    const width = 1000 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
+
+    const svg = d3
+      .select(root)
+      .attr(`width`, width + margin.left + margin.right)
+      .attr(`height`, height + margin.top + margin.bottom);
+
+    // THIS FUNCTION IS VERY IMPORTANT
+    // clear all chart elements, and avoid duplicates
+    svg.selectAll(`*`).remove();
+
+    // Define the new dataset
+    const dataset = [
+      { date: "1950-12-31", population: 2499322157, change: 0 },
+      { date: "1951-12-31", population: 2543130380, change: 1.75 },
+      { date: "1952-12-31", population: 2590270899, change: 1.85 },
+      { date: "1953-12-31", population: 2640278797, change: 1.93 },
+      { date: "1954-12-31", population: 2691979339, change: 1.96 },
+    ];
+
+    // Extract the year from the date and adjust the x-scale
+    const data = dataset
+      .map((d) => ({
+        year: new Date(d.date).getFullYear(),
+        population: d.population / 100, // Decrease the scale ratio of the y-coordinate
+        change: d.change,
+      }))
+      .filter((d) => !isNaN(d.year) && !isNaN(d.population));
+
+    // Add X axis with adjusted scale
+    const x = d3
+      .scaleLinear()
+      .domain([d3.min(data, (d) => d.year)!, d3.max(data, (d) => d.year)! + 1]) // Add 1 to include the last year
+      .range([0, width]);
+    svg
+      .append(`g`)
+      .attr(`transform`, `translate(0,` + height + `)`)
+      .call(d3.axisBottom(x).ticks(data.length));
+
+    // Add Y axis
+    const y = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, (d) => d.population)!])
+      .range([height, 0]);
+    svg.append(`g`).call(d3.axisLeft(y).ticks(10));
+
+    // This allows finding the closest X index of the mouse
+    const bisect = d3.bisector<{ year: number }, number>((d) => d.year).left;
+
+    // Create the circle that travels along the curve of the chart
+    const focus = svg
+      .append(`g`)
+      .append(`circle`)
+      .style(`fill`, `none`)
+      .attr(`stroke`, `black`)
+      .attr(`r`, 8.5)
+      .style(`opacity`, 0);
+
+    // Create the text that travels along the curve of the chart
+    const focusText = svg
+      .append(`g`)
+      .append(`text`)
+      .style(`opacity`, 0)
+      .attr(`text-anchor`, `left`)
+      .attr(`alignment-baseline`, `middle`);
+
+    // Add the line
+    svg
+      .append(`path`)
+      .datum(data)
+      .attr(`fill`, `none`)
+      .attr(`stroke`, `steelblue`)
+      .attr(`stroke-width`, 1.5)
+      .attr(
+        `d`,
+        d3
+          .line<{ year: number; population: number }>()
+          .x((d) => x(d.year)!)
+          .y((d) => y(d.population))
+      );
+
+    // Create a rect on top of the svg area: this rectangle recovers mouse position
+    svg
+      .append(`rect`)
+      .style(`fill`, `none`)
+      .style(`pointer-events`, `all`)
+      .attr(`width`, width)
+      .attr(`height`, height)
+      .on(`mouseover`, mouseover)
+      .on(`mousemove`, mousemove)
+      .on(`mouseout`, mouseout);
+
+    // What happens when the mouse moves -> show the annotations at the right positions.
+    function mouseover() {
+      focus.style(`opacity`, 1);
+      focusText.style(`opacity`, 1);
+    }
+
+    function mousemove(event: any) {
+      // recover coordinate we need
+      const x0 = x.invert(d3.pointer(event)[0]);
+      const i = bisect(data, x0, 1);
+      const selectedData = data[i - 1];
+
+      focus
+        .attr(`cx`, x(selectedData.year)!)
+        .attr(`cy`, y(selectedData.population));
+
+      focusText
+        .html(
+          `Year: ${selectedData.year} - Population: ${(
+            selectedData.population * 10
+          ).toLocaleString()}`
+        ) // Restore the original value of population
+        .attr(`x`, x(selectedData.year)! + 15)
+        .attr(`y`, y(selectedData.population));
+    }
+
+    function mouseout() {
+      focus.style(`opacity`, 0);
+      focusText.style(`opacity`, 0);
+    }
+  }
+
+  useEffect(() => {
+    if (rootRef.current && svgRef.current) {
+      render(svgRef.current);
+    }
+  }, [rootRef]);
+
+  return (
+    <div className={cn(styles.heatmap, className)} {...rest} ref={rootRef}>
+      <svg className={styles.svgRoot} ref={svgRef} />
+    </div>
+  );
+}
