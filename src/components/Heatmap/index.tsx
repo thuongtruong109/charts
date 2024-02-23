@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { HTMLAttributes, MutableRefObject, useEffect, useRef } from "react";
 import cn from "classnames";
 import * as d3 from "d3";
+import { HTMLAttributes, MutableRefObject, useEffect, useRef } from "react";
 
 import styles from "./styles.module.css";
 
@@ -123,12 +123,7 @@ export default function Heatmap({ className, ...rest }: HeatmapProps) {
 
   return (
     <div className={cn(styles.heatmap, className)} {...rest}>
-      <h2>
-        1. Heatmap chart -{" "}
-        <a href="https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_IC.csv">
-          View dataset
-        </a>
-      </h2>
+      <h2> 1. Heatmap chart</h2>
       <svg className={styles.svgRoot} ref={rootRef} />
     </div>
   );

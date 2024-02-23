@@ -15,7 +15,7 @@ const data: ChartData<any> = {
 
 const PolarChart: React.FC = () => (
   <div>
-    <h2>6. Polar Example</h2>
+    <h2>6. Polar chart</h2>
     <PolarArea data={data} width={400} height={400} />
   </div>
 );

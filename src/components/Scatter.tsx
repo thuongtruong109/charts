@@ -33,7 +33,7 @@ const data: ChartData<any> = {
 
 const ScatterChart: React.FC = () => (
   <div>
-    <h2>7. Scatter Example</h2>
+    <h2>7. Scatter chart</h2>
     <Scatter data={data} width={400} height={400} />
   </div>
 );

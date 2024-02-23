@@ -15,7 +15,7 @@ const data: ChartData<any> = {
 
 const DoughnutChart: React.FC = () => (
   <div>
-    <h2>10. Doughnut Example</h2>
+    <h2>10. Doughnut chart</h2>
     <Doughnut data={data} width={400} height={400} />
   </div>
 );

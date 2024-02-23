@@ -1,6 +1,6 @@
 import { ChartData } from "chart.js";
 import React from "react";
-import { Line, Pie } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 
 const data: ChartData<any> = {
   labels: ["Red", "Blue", "Yellow"],
@@ -15,7 +15,7 @@ const data: ChartData<any> = {
 
 const PieChart: React.FC = () => (
   <div>
-    <h2>4. Pie Example</h2>
+    <h2>4. Pie chart</h2>
     <Pie data={data} width={400} height={400} />
   </div>
 );

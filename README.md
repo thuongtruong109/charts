@@ -1,6 +1,10 @@
 # Charts Visualization
 
-[Demo](https://data-visualization-vip.vercel.app/)
+### Preview
+
+- [Demo](https://chartall.vercel.app/)
+
+![Preview](/public/preview.jpeg)
 
 ### Description
 

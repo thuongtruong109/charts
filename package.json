@@ -1,5 +1,17 @@
 {
-    "name": "data-visualization",
+    "name": "charts",
+    "description": "Visualize data with common charts",
+    "keywords": [
+        "next.js",
+        "react",
+        "typescript",
+        "chart",
+        "d3",
+        "csv",
+        "data visualization"
+    ],
+    "author": "",
+    "license": "MIT",
     "scripts": {
         "dev": "next",
         "build": "next build",

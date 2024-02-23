@@ -37,7 +37,7 @@ const data = {
 const BubbleChart: React.FC = () => {
   return (
     <div>
-      <h2>11. Bubble Example</h2>
+      <h2>11. Bubble chart</h2>
       <Bubble data={data} width={400} height={200} />
     </div>
   );

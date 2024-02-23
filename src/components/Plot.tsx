@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 const Plot = () => {
   const svgRef = useRef(null);
@@ -99,12 +98,7 @@ const Plot = () => {
 
   return (
     <div>
-      <h2>
-        2. Scatter plot chart -{" "}
-        <a href="https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv">
-          View dataset
-        </a>
-      </h2>
+      <h2>2. Scatter plot chart</h2>
       <div ref={svgRef}></div>
       <button id="popCircle">Pop a circle</button>
     </div>

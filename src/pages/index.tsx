@@ -1,8 +1,8 @@
 import Heatmap from "@/components/Heatmap";
 
-import BarChart from "@/components/Bar";
+import BarChartAnimation from "@/components/BarChartAnimation";
+import BarChartDefault from "@/components/BarChartDefault";
 import BubbleChart from "@/components/Bubble";
-import CrazyChart from "@/components/Crazy";
 import DoughnutChart from "@/components/Doughnut";
 import HorizontalBarChart from "@/components/Horinzontal";
 import LineChart from "@/components/Line";
@@ -32,10 +32,10 @@ export default function Home() {
         <DoughnutChart />
         <BubbleChart />
         <div className={styles.cell}>
-          <BarChart />
+          <BarChartDefault />
         </div>
         <div className={styles.cell}>
-          <CrazyChart />
+          <BarChartAnimation />
         </div>
       </div>
     </main>

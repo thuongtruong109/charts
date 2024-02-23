@@ -38,7 +38,7 @@ const data: ChartData<any> = {
 
 const RadarChart: React.FC = () => (
   <div>
-    <h2>5.Radar Example</h2>
+    <h2>5.Radar chart</h2>
     <Radar data={data} width={400} height={400} />
   </div>
 );
